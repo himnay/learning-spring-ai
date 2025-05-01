@@ -1,0 +1,61 @@
+{
+  "result": {
+    "metadata": {
+      "contentFilterMetadata": null,
+      "finishReason": "STOP"
+    },
+    "output": {
+      "messageType": "ASSISTANT",
+      "metadata": {
+        "refusal": "",
+        "finishReason": "STOP",
+        "index": 0,
+        "role": "ASSISTANT",
+        "id": "chatcmpl-BSRCq6Vf5kYIvw2f01f1HPCjvLz6D",
+        "messageType": "ASSISTANT"
+      },
+      "toolCalls": [],
+      "content": "I am ChatGPT, an AI language model created by OpenAI. How can I assist you today?"
+    }
+  },
+  "results": [
+    {
+      "metadata": {
+        "contentFilterMetadata": null,
+        "finishReason": "STOP"
+      },
+      "output": {
+        "messageType": "ASSISTANT",
+        "metadata": {
+          "refusal": "",
+          "finishReason": "STOP",
+          "index": 0,
+          "role": "ASSISTANT",
+          "id": "chatcmpl-BSRCq6Vf5kYIvw2f01f1HPCjvLz6D",
+          "messageType": "ASSISTANT"
+        },
+        "toolCalls": [],
+        "content": "I am ChatGPT, an AI language model created by OpenAI. How can I assist you today?"
+      }
+    }
+  ],
+  "metadata": {
+    "id": "chatcmpl-BSRCq6Vf5kYIvw2f01f1HPCjvLz6D",
+    "model": "gpt-4o-2024-08-06",
+    "rateLimit": {
+      "requestsLimit": 500,
+      "requestsRemaining": 499,
+      "tokensLimit": 30000,
+      "tokensRemaining": 29993,
+      "requestsReset": "PT0.12S",
+      "tokensReset": "PT0.014S"
+    },
+    "usage": {
+      "promptTokens": 11,
+      "generationTokens": 22,
+      "totalTokens": 33
+    },
+    "promptMetadata": [],
+    "empty": false
+  }
+}
