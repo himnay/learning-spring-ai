@@ -1,11 +1,18 @@
 package com.org.springai.service;
 
+import com.org.springai.model.Movie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.converter.ListOutputConverter;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -17,8 +24,8 @@ public class ChatService {
         this.chatClient = chatClientBuilder.build();
     }
 
-    public String generateChatPromptResponse(String question) {
-        log.info("Generate Chat Prompt Response");
+    public String generateChatPromptStringResponse(String question) {
+        log.info("Generate Chat String Response");
 
         Prompt prompt = new Prompt(question);
 
@@ -37,18 +44,28 @@ public class ChatService {
         return message.getContent();
     }
 
-    public String generateChatCallResponse(String question) {
-        log.info("Generate Chat Call Response");
+    public List generateChatCallResponseOnAListFormat(String question) {
+        log.info("Generate Chat Call List Response");
 
-        AssistantMessage message = chatClient
+        List<String> message = chatClient
                 .prompt()
                 .user(question)
                 .call()
-                .chatResponse()
-                .getResult()
-                .getOutput();
+                .entity(new ListOutputConverter(new DefaultConversionService()));
 
-        return message.getContent();
+        return message;
+    }
+
+    public Map<String, String> generateChatCallResponseOnAMapFormat(String question) {
+        log.info("Generate Chat Call Map Response");
+
+        Map<String, String> message = chatClient
+                .prompt()
+                .user(question)
+                .call()
+                .entity(new ParameterizedTypeReference<Map<String, String>>() {});
+
+        return message;
     }
 
     public ChatResponse generateChatResponse(String question) {
@@ -63,7 +80,7 @@ public class ChatService {
         return chatResponse;
     }
 
-    public ChatResponse generateChatTemplate(String question) {
+    public ChatResponse generateTemplateChatResponse(String question) {
 
         String responseTemplate = "The response for you {question} is: ";
 
@@ -77,6 +94,25 @@ public class ChatService {
         return chatResponse;
     }
 
+    public List<Movie> generateTemplateMovieChatResponse(String director) {
 
+        String responseTemplate = """
+                                    "Generate a list of movies directed by {director}. If the director is unknown, return null.
+                                    Each movie should include a title and year of release {format}"
+                                  """;
+
+        List<Movie> chatResponse = chatClient
+                .prompt()
+                .user(promptUserSpec -> promptUserSpec.text(responseTemplate)
+                        .param("director", director)
+                        .param("format", "json"))
+                .call()
+                .entity(new ParameterizedTypeReference<List<Movie>>() {
+                });
+
+        log.info("Chat Response: {}", chatResponse);
+
+        return chatResponse;
+    }
 
 }
