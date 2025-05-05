@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,6 +28,14 @@ public class SpringAIUtils {
                 .lines(resource.getFile().toPath())
                 .map(Document::new)
                 .collect(toList());
+    }
+
+    @SneakyThrows
+    public static List<Document> loadDocumentWithMeta(Resource resource) {
+        return Files
+                .lines(resource.getFile().toPath())
+                .map(line -> new Document(line, Map.of("meta1", "meta2")))
+                .toList();
     }
 
     public static SearchRequest createSearchRequest(String query, int limit) {

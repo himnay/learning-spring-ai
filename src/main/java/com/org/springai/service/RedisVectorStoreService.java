@@ -11,33 +11,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.org.springai.utils.SpringAIUtils.createSearchRequest;
-import static com.org.springai.utils.SpringAIUtils.loadDocument;
+import static com.org.springai.utils.SpringAIUtils.*;
 
 @Slf4j
 @Service
-public class ChromaVectorStoreService {
+public class RedisVectorStoreService {
 
-    @Value("classpath:/ai/vector-store/books.txt")
-    private Resource booksResource;
+    @Value("classpath:/ai/vector-store/bikes.txt")
+    private Resource bikesResource;
 
     private final VectorStore vectorStore;
 
-    public ChromaVectorStoreService(VectorStore vectorStore) {
+    public RedisVectorStoreService(VectorStore vectorStore) {
         this.vectorStore = vectorStore;
     }
 
     @SneakyThrows
     public void writeToVectorStore() {
-        log.info("Creating RAG in Chroma Vector Store");
-        List<Document> documents = loadDocument(booksResource);
+        log.info("Creating RAG in Redis Vector Store");
+        List<Document> documents = loadDocumentWithMeta(bikesResource);
         vectorStore.add(documents);
     }
 
     public List<String> searchFromVectorStore() {
-        log.info("Searching books from LLM using RAG");
+        log.info("Searching bikes from LLM using RAG");
 
-        return vectorStore.similaritySearch(createSearchRequest("classic novel about wealth and society", 1))
+        return vectorStore.similaritySearch(createSearchRequest("Bike for small kids", 1))
                     .stream()
                     .map(document -> document.getContent())
                     .collect(Collectors.toList());

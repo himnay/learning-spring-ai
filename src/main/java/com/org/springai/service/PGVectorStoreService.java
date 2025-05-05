@@ -48,13 +48,13 @@ public class PGVectorStoreService {
 
     @SneakyThrows
     public void writeToVectorStore() {
-        log.info("Loading products to Postgres Vector Store");
+        log.info("Creating RAG in postgres Vector Store");
         List<Document> documents = loadDocument(productsResource);
         vectorStore.add(documents);
     }
 
     public List<String> searchFromVectorStore() {
-        log.info("Reading products from Postgres Vector Store");
+        log.info("Searching products from LLM using RAG");
 
         return vectorStore.similaritySearch(createSearchRequest("smartsearch with features like fitness tracking and health monitoring", 10))
                     .stream()

@@ -22,16 +22,19 @@ spring:
 #        distance-type: COSINE_DISTANCE
 #        dimensions: 1536
 #        schema-validation: true
+##        remove-existing-vector-store-table: true
+#      chroma:
+#        initialize-schema: true
+#        index-type: HNSW
+#        distance-type: COSINE_DISTANCE
+#        dimensions: 1536
+#        schema-validation: true
 #        remove-existing-vector-store-table: true
-      chroma:
-        initialize-schema: true
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
-        dimensions: 1536
-        schema-validation: true
-        remove-existing-vector-store-table: true
-        client:
-          host: http://localhost
-          port: 8000
-        collection-name: spring-ai
+#        client:
+#          host: http://localhost
+#          port: 8000
+#        collection-name: spring-ai
+      redis:
+        url: localhost
+        index: document
 
