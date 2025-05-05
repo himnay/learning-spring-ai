@@ -1,9 +1,25 @@
+#server:
+#  context-path: /ai
+#  port: 8080
+
 spring:
   application:
     name: spring-ai
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
   ai:
     openai:
       api-key:
       chat:
         options:
           model: gpt-4o
+    vectorstore:
+      pgvector:
+        initialize-schema: false
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+        schema-validation: true
+        remove-existing-vector-store-table: true
