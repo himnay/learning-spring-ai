@@ -1,7 +1,8 @@
 package com.org.springai.controller;
 
 
-import com.org.springai.service.VectorStoreService;
+import com.org.springai.service.ChromaVectorStoreService;
+import com.org.springai.service.PGVectorStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +15,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VectorStoreController {
 
-    private final VectorStoreService vectorStoreService;
+    private final PGVectorStoreService vectorStoreService;
+    private final ChromaVectorStoreService chromaVectorStoreService;
 
     @GetMapping("/list")
     public String startVectorStore(@RequestParam(value = "message", defaultValue = "give me the names of top five cities in US ?") String question) {
         return vectorStoreService.chatUsingVectorStore(question);
     }
 
-    @PostMapping(value = "/write")
-    public void loadVectorStore() {
-        vectorStoreService.writeToPGVectorStore();
-        log.info("Vector Store loaded successfully");
+    @PostMapping(value = "/pg/write")
+    public void writeToPGVectorStore() {
+        vectorStoreService.writeToVectorStore();
+        log.info("Load to PG Vector Store successfully...");
     }
 
-    @GetMapping(value = "/read")
-    public List<String> readVectorStore() {
+    @GetMapping(value = "/pg/read")
+    public List<String> readFromPGVectorStore() {
         log.info("Search from PG Vector Store");
-        return vectorStoreService.searchFromPGVectorStore();
+        return vectorStoreService.searchFromVectorStore();
+    }
+
+    @PostMapping(value = "/chrome/write")
+    public void writeToChromeVectorStore() {
+        chromaVectorStoreService.writeToVectorStore();
+        log.info("Load to Chrome Vector Store successfully...");
+    }
+
+    @GetMapping(value = "/chrome/read")
+    public List<String> readFromChromeVectorStore() {
+        log.info("Search from Chrome Vector Store");
+        return chromaVectorStoreService.searchFromVectorStore();
     }
 }

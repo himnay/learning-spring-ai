@@ -19,15 +19,15 @@ import static com.org.springai.utils.SpringAIUtils.loadDocument;
 
 @Slf4j
 @Service
-public class VectorStoreService {
+public class PGVectorStoreService {
 
-    @Value("classpath:/ai/pgvector/products.txt")
-    private Resource resource;
+    @Value("classpath:/ai/vector-store/products.txt")
+    private Resource productsResource;
 
     private final ChatClient chatClient;
     private final VectorStore vectorStore;
 
-    public VectorStoreService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
+    public PGVectorStoreService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()))
                 .build();
@@ -47,13 +47,13 @@ public class VectorStoreService {
     }
 
     @SneakyThrows
-    public void writeToPGVectorStore() {
+    public void writeToVectorStore() {
         log.info("Loading products to Postgres Vector Store");
-        List<Document> documents = loadDocument(resource);
+        List<Document> documents = loadDocument(productsResource);
         vectorStore.add(documents);
     }
 
-    public List<String> searchFromPGVectorStore() {
+    public List<String> searchFromVectorStore() {
         log.info("Reading products from Postgres Vector Store");
 
         return vectorStore.similaritySearch(createSearchRequest("smartsearch with features like fitness tracking and health monitoring", 10))
