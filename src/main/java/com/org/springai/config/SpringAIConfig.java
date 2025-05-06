@@ -1,5 +1,8 @@
 package com.org.springai.config;
 
+import com.org.springai.model.BookingRequest;
+import com.org.springai.model.BookingResponse;
+import com.org.springai.service.FunctionCallingService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -11,11 +14,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Description;
 import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Function;
 
 @Configuration
 public class SpringAIConfig {
@@ -78,6 +83,12 @@ public class SpringAIConfig {
         return chatClientBuilder
                 .defaultSystem(inputResource)
                 .build();
+    }
+
+    @Bean
+    @Description("Get the status of a hotel booking")
+    public Function<BookingRequest, BookingResponse> bookingStatus(){
+        return new FunctionCallingService();
     }
 
 //    private RedisVectorStore.RedisVectorStoreConfig getRedisVectorStoreConfig(String tag) {
