@@ -24,7 +24,7 @@ spring:
         schema-validation: true
         schema-name: public
         table-name: vector_store
-        remove-existing-vector-store-table: true
+        remove-existing-vector-store-table: false
 #      chroma:
 #        initialize-schema: true
 #        index-type: HNSW

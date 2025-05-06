@@ -7,7 +7,6 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.Filter;
-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.org.springai.utils.SearchRequestUtil.createFiltersSearchRequest;
+import static com.org.springai.utils.SearchRequestUtil.createSearchRequest;
 import static com.org.springai.utils.SpringAIUtils.*;
 
 @Slf4j
@@ -48,16 +49,32 @@ public class PGVectorStoreFilterService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> searchWithFilterExpression(String query) {
+    public List<String> searchWithEqualFilterExpression(String query, Filter.Expression expression) {
         // create a filter expression
-        Filter.Expression expression = new FilterExpressionBuilder()
-                .eq("brand", "Apple")
-                .build();
-
         SearchRequest filtersSearchRequest = createFiltersSearchRequest(query, expression, 3);
 
         return vectorStore
                 .similaritySearch(filtersSearchRequest)
+                .stream()
+                .map(Document::getContent)
+                .toList();
+    }
+
+    public List<String> searchWithEqualFilterExpression(String query, SearchRequest expression) {
+        // create a filter expression
+        return vectorStore
+                .similaritySearch(expression)
+                .stream()
+                .map(Document::getContent)
+                .toList();
+    }
+
+    public List<String> searchWithEqualTextFilterExpression(String query, String expression) {
+        // create a filter expression
+        return vectorStore
+                .similaritySearch(SearchRequest.query(query)
+                .withFilterExpression(expression)
+                        .withTopK(3))
                 .stream()
                 .map(Document::getContent)
                 .toList();

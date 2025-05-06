@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.org.springai.utils.SpringAIUtils.*;
+import static com.org.springai.utils.SearchRequestUtil.createSearchRequest;
+import static com.org.springai.utils.SpringAIUtils.loadDocumentWithMeta;
 
 @Slf4j
 @Service

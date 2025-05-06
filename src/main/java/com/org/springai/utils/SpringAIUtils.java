@@ -7,8 +7,6 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
-import org.springframework.ai.vectorstore.SearchRequest;
-import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -45,18 +43,7 @@ public class SpringAIUtils {
                 .toList();
     }
 
-    public static SearchRequest createSearchRequest(String query, int limit) {
-        return SearchRequest
-                .query(query)
-                .withTopK(limit);
-    }
 
-    public static SearchRequest createFiltersSearchRequest(String query, Filter.Expression expression, int limit) {
-        return SearchRequest
-             .query(query)
-             .withTopK(limit)
-             .withFilterExpression(expression);
-    }
 
     public static List<Product> getProducts(Resource resource) {
         List<Product> products = new ArrayList<>();

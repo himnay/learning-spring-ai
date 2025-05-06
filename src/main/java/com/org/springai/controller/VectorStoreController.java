@@ -7,9 +7,12 @@ import com.org.springai.service.PGVectorStoreService;
 import com.org.springai.service.RedisVectorStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.org.springai.utils.FilterExpressionUtil.*;
 
 @Slf4j
 @RestController
@@ -48,7 +51,20 @@ public class VectorStoreController {
     @GetMapping(value = "/pg/search")
     public List<String> searchFromPGVectorStore(@RequestParam(defaultValue = "battery") String query) {
         log.info("Search from PG Vector Store");
-        return pgVectorStoreFilterService.searchWithFilterExpression(query);
+        Filter.Expression filterExpression = createEqualFilterExpression("brand", "Apple");
+        // OR
+        Filter.Expression multiFilterExpression = createMultiFilterEqExpression();
+        // OR
+        Filter.Expression multiFilterInExpression = createMultiFilterInExpression();
+        // OR
+        Filter.Expression multiFilterNotInExpression = createMultiFilterNotInExpression();
+        // OR
+        Filter.Expression multiFilterNotExpression = createMultiFilterNotExpression();
+        // OR
+        String expression = "brand in ['Apple', 'Samsung'] and price > 1000";
+        // return pgVectorStoreFilterService.searchWithEqualFilterExpression(query, multiFilterNotExpression);
+        // OR
+        return pgVectorStoreFilterService.searchWithEqualTextFilterExpression(query, expression);
     }
 
     @PostMapping(value = "/chrome/write")

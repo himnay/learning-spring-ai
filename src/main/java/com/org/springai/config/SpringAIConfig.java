@@ -6,15 +6,12 @@ import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.reader.TextReader;
 import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
-//import org.springframework.ai.vectorstore.RedisVectorStore;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-//import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-//import redis.clients.jedis.JedisPooled;
 
 import java.io.File;
 import java.io.IOException;
