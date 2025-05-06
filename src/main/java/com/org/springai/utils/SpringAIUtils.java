@@ -1,13 +1,20 @@
 package com.org.springai.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.org.springai.model.Product;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +49,27 @@ public class SpringAIUtils {
         return SearchRequest
                 .query(query)
                 .withTopK(limit);
+    }
+
+    public static SearchRequest createFiltersSearchRequest(String query, Filter.Expression expression, int limit) {
+        return SearchRequest
+             .query(query)
+             .withTopK(limit)
+             .withFilterExpression(expression);
+    }
+
+    public static List<Product> getProducts(Resource resource) {
+        List<Product> products = new ArrayList<>();
+        try (InputStream inputStream = resource.getInputStream()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(inputStream);
+            for (JsonNode node : jsonNode) {
+                Product product = objectMapper.treeToValue(node, Product.class);
+                products.add(product);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 }
