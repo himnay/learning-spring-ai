@@ -1,41 +1,8 @@
-#server:
-#  context-path: /ai
-#  port: 8080
-
 spring:
   application:
-    name: spring-ai
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    name: spring-ai-ollama
   ai:
-    openai:
-      api-key:
+    ollama:
+      base-url: http://localhost:11434
       chat:
-        options:
-          model: gpt-4o
-    vectorstore:
-      pgvector:
-        initialize-schema: true
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
-        dimensions: 1536
-        schema-validation: true
-        schema-name: public
-        table-name: vector_store
-        remove-existing-vector-store-table: false
-#      chroma:
-#        initialize-schema: true
-#        index-type: HNSW
-#        distance-type: COSINE_DISTANCE
-#        dimensions: 1536
-#        schema-validation: true
-#        remove-existing-vector-store-table: true
-#        client:
-#          host: http://localhost
-#          port: 8000
-#        collection-name: spring-ai
-#      redis:
-#        url: localhost
-#        index: document
+        model: llama3.1:8b
